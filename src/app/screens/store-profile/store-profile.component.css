@@ -1,0 +1,85 @@
+.avatar {
+  border-width: thin;
+  border-style: solid;
+  border-color: #e6e6e6;
+  object-fit: cover;
+  width: 100%;
+  min-height: 200px;
+}
+
+.avatar-div {
+  display: flex;
+  margin-bottom: 20px;
+  background-color: white;
+  position: relative;
+}
+
+.main-container {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  margin: 0 !important  ;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-hint {
+  font-size: 12px;
+}
+
+.form-input {
+  padding: 5px 10px;
+  border-color: #dfdfdf;
+  border-width: thin;
+  border-style: solid;
+}
+
+.form-spacer {
+  margin-bottom: 15px;
+}
+
+#map {
+  min-height: 300px;
+  flex: 1;
+  max-width: 100%;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.pad-vertical {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.pad {
+  padding: 20px;
+}
+
+.locate-button {
+  align-self: flex-end;
+}
+
+.save-button {
+  align-self: flex-end;
+  margin-top: 10px;
+}
+
+.browse-button {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+.card {
+  box-shadow: unset;
+  /* padding: 10px; */
+}

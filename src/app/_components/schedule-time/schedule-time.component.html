@@ -1,0 +1,7 @@
+<div class="schedule-container">
+  <span class="day">{{day}}</span>
+  <div class="div-schedule-row" [formGroup]="timeGroup">
+    <input class="col-6 time" formControlName="From" type="time" />
+    <input class="col-6 time" formControlName="To" type="time" />
+  </div>
+</div>

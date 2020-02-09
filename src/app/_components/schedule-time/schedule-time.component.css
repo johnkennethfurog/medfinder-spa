@@ -1,0 +1,19 @@
+.day {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.schedule-container {
+  padding-top: 10px;
+}
+
+.time {
+  font-size: 13px;
+  padding: 5px 10px;
+  margin-right: 2px;
+}
+
+.div-schedule-row {
+  display: flex;
+  align-items: center;
+}

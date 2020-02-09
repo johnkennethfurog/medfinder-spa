@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <h3 class="ml-3">Store Profile</h3>
+  <form [formGroup]="storeProfileForm">
+    <div class="row">
+      <div class="col-4">
+        <div class="avatar-div">
+          <img class="avatar pad" [src]="imgURL" alt="">
+          <input #file type="file" accept='image/*' (change)="preview(file.files)" style="display:none;" />
+          <button (click)="file.click()" mat-raised-button class="browse-button">Browse</button>
+        </div>
+
+        <div class="card pad">
+          <div class="card-body" [formGroup]="_getScheduleForm">
+            <span class="header">Schedule</span>
+            <app-schedule-time [day]="'Monday'" [timeGroup]="_getDayForm('mon')"></app-schedule-time>
+            <app-schedule-time [day]="'Tuesday'" [timeGroup]="_getDayForm('tue')"></app-schedule-time>
+            <app-schedule-time [day]="'Wendesday'" [timeGroup]="_getDayForm('wed')"></app-schedule-time>
+            <app-schedule-time [day]="'Thursday'" [timeGroup]="_getDayForm('thu')"></app-schedule-time>
+            <app-schedule-time [day]="'Friday'" [timeGroup]="_getDayForm('fri')"></app-schedule-time>
+            <app-schedule-time [day]="'Saturday'" [timeGroup]="_getDayForm('sat')"></app-schedule-time>
+            <app-schedule-time [day]="'Sunday'" [timeGroup]="_getDayForm('sun')"></app-schedule-time>
+          </div>
+        </div>
+      </div>
+      <div class="col-8 main-container pad">
+        <span class="form-label">Name</span>
+        <input formControlName="Name" class="form-input form-spacer" />
+        <span class="form-label">Coontact Info</span>
+        <input type="tel" formControlName="ContactInfo" class="form-input form-spacer" />
+        <span class="form-label">Address</span>
+        <textarea formControlName="Address" class="form-input form-spacer"></textarea>
+        <button mat-raised-button class="locate-button" (click)="geoCodeAddress()">Locate</button>
+        <span class="form-label">Select your location</span>
+        <div #mapContainer id="map"></div>
+        <button mat-raised-button color="primary" class="save-button" (click)="save()">Save</button>
+      </div>
+    </div>
+  </form>
+
+</div>

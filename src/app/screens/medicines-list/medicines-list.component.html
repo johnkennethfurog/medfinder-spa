@@ -1,0 +1,30 @@
+<div class="container-fluid mt-3">
+
+  <h5 class="mb-3">Medicine's List</h5>
+  <div class="div-action mb-2">
+
+    <div class="search">
+
+      <input class="input-search" placeholder="Enter medicine's generic or brand name... " />
+      <mat-icon>search</mat-icon>
+    </div>
+    <!-- <mat-form-field appearance="outline">
+      <input matInput placeholder="Search for generic or brand name">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field> -->
+    <button color="primary" mat-raised-button (click)="showMedicineModal()">
+      Create
+    </button>
+
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <app-medicine-header></app-medicine-header>
+      <app-medicine-card></app-medicine-card>
+      <app-medicine-card></app-medicine-card>
+      <app-medicine-card></app-medicine-card>
+      <app-medicine-card></app-medicine-card>
+    </div>
+  </div>
+</div>
