@@ -7,6 +7,9 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DARK_THEME } from "../../_utils/dark-theme.js";
+import { StoreService } from "src/app/_services/store.service.js";
+import { Store } from "src/app/_models/store.js";
+import { ScheduleTime } from "src/app/_models/schedule.js";
 
 @Component({
   selector: "app-store-profile",
@@ -16,9 +19,11 @@ import { DARK_THEME } from "../../_utils/dark-theme.js";
 export class StoreProfileComponent implements AfterViewInit {
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
 
+  store: Store;
   imgURL: any = "../../../assets/images/placeholder.png";
   selectedFile: File;
 
+  isLoading = false;
   isGettingCoordinates = false;
   selectedMarker: google.maps.Marker;
 
@@ -37,37 +42,79 @@ export class StoreProfileComponent implements AfterViewInit {
   markers: google.maps.Marker[] = [];
   storeProfileForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private storeService: StoreService) {
     this.initializeForm();
+    this.fetchProfile();
+  }
+
+  fetchProfile() {
+    this.storeService.getStoreProfile().subscribe(
+      rspns => {
+        this.store = rspns.data;
+        this.setFormValue();
+      },
+      error => {}
+    );
   }
 
   initializeForm() {
     this.storeProfileForm = this.fb.group({
+      _id: this.fb.control(""),
       Name: this.fb.control("", Validators.required),
       Address: this.fb.control("", Validators.required),
       Location: this.fb.control({}, Validators.required),
       Avatar: this.fb.control(""),
       ContactInfo: this.fb.control(""),
       Schedule: this.fb.group({
-        mon: this.addScheduleTime("mon"),
-        tue: this.addScheduleTime("tue"),
-        wed: this.addScheduleTime("wed"),
-        thu: this.addScheduleTime("thu"),
-        fri: this.addScheduleTime("fri"),
-        sat: this.addScheduleTime("sat"),
-        sun: this.addScheduleTime("sun")
+        mon: this.addScheduleTime({ From: "", To: "" }),
+        tue: this.addScheduleTime({ From: "", To: "" }),
+        wed: this.addScheduleTime({ From: "", To: "" }),
+        thu: this.addScheduleTime({ From: "", To: "" }),
+        fri: this.addScheduleTime({ From: "", To: "" }),
+        sat: this.addScheduleTime({ From: "", To: "" }),
+        sun: this.addScheduleTime({ From: "", To: "" })
       })
     });
+  }
+
+  get _scheduleForm() {
+    return this.storeProfileForm.get("Schedule") as FormGroup;
+  }
+
+  setFormValue() {
+    const storeLocation = new google.maps.LatLng(
+      this.store.Location.coordinates[1],
+      this.store.Location.coordinates[0]
+    );
+
+    this.storeProfileForm.get("_id").setValue(this.store._id);
+    this.storeProfileForm.get("Name").setValue(this.store.Name);
+    this.storeProfileForm.get("Address").setValue(this.store.Address);
+    this.storeProfileForm.get("Location").setValue(this.store.Location);
+    this.storeProfileForm.get("ContactInfo").setValue(this.store.ContactInfo);
+    this.storeProfileForm.get("Avatar").setValue("");
+
+    this._getScheduleForm.get("mon").setValue(this.store.Schedule.mon);
+    this._getScheduleForm.get("tue").setValue(this.store.Schedule.tue);
+    this._getScheduleForm.get("wed").setValue(this.store.Schedule.wed);
+    this._getScheduleForm.get("thu").setValue(this.store.Schedule.thu);
+    this._getScheduleForm.get("fri").setValue(this.store.Schedule.fri);
+    this._getScheduleForm.get("sat").setValue(this.store.Schedule.sat);
+    this._getScheduleForm.get("sun").setValue(this.store.Schedule.sun);
+
+    this.setLocationSelected(storeLocation);
+
+    console.log("this.storeProfileForm", this.storeProfileForm.value);
   }
 
   _getDayForm(day): FormGroup {
     return this._getScheduleForm.get(day) as FormGroup;
   }
 
-  addScheduleTime(day: string): FormGroup {
+  addScheduleTime(scheedule: ScheduleTime): FormGroup {
     return this.fb.group({
-      From: this.fb.control("08:00"),
-      To: this.fb.control("17:00")
+      From: this.fb.control(scheedule.From),
+      To: this.fb.control(scheedule.To)
     });
   }
 
@@ -115,7 +162,6 @@ export class StoreProfileComponent implements AfterViewInit {
   initializeSelectedMarker(location) {
     const markerIcon = this.createMarkerIcon("current_location.png");
 
-    this.storeProfileForm.get("Location").setValue(location);
     this.selectedMarker = new google.maps.Marker({
       map: this.map,
       icon: markerIcon,
@@ -127,8 +173,11 @@ export class StoreProfileComponent implements AfterViewInit {
     this.locationSelected(location);
   }
 
-  locationSelected(location) {
-    this.storeProfileForm.get("Location").setValue(location);
+  locationSelected(location: google.maps.LatLng) {
+    this.storeProfileForm.get("Location").setValue({
+      type: "Point",
+      coordinates: [location.lng(), location.lat()]
+    });
     this.map.setZoom(15);
     this.map.setCenter(location);
     this.selectedMarker.setPosition(location);
@@ -202,10 +251,6 @@ export class StoreProfileComponent implements AfterViewInit {
     };
   }
 
-  save() {
-    console.log(this.storeProfileForm.value);
-  }
-
   preview(files) {
     if (files.length === 0) {
       return;
@@ -223,5 +268,24 @@ export class StoreProfileComponent implements AfterViewInit {
     reader.onload = evnt => {
       this.imgURL = reader.result;
     };
+  }
+
+  save() {
+    if (this.isLoading) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.storeService.updateStoreProfile(this.storeProfileForm.value).subscribe(
+      rspns => {
+        this.isLoading = false;
+      },
+      error => {
+        console.log("error", error);
+        this.isLoading = false;
+      }
+    );
+
+    console.log(this.storeProfileForm.value);
   }
 }

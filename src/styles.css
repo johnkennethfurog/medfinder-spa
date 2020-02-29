@@ -64,3 +64,45 @@ button:focus {
 .form-footer {
   margin-right: 0;
 }
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  width: 100%;
+  display: unset;
+}
+
+.div-action {
+  display: flex;
+  align-items: center;
+}
+
+.input-search {
+  border-style: none;
+  flex: 1;
+}
+
+.search {
+  padding: 7px 7px 7px 10px;
+  border-width: thin;
+  border-style: solid;
+  margin-right: 10px;
+  border-color: #dfdfdf;
+  background-color: white;
+  align-items: center;
+  display: flex;
+  min-width: 40%;
+}
+
+.input-invalid {
+  border-color: red;
+  border-style: solid;
+  border-width: thin;
+}
+
+.input-invalid-message {
+  font-size: 12px;
+  color: red;
+}

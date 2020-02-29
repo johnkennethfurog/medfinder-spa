@@ -5,20 +5,88 @@
 
     <div class="search">
 
-      <input class="input-search" placeholder="Enter medicine's generic or brand name... " />
+      <input class="input-search" (keyup)="applyFilter($event.target.value)"
+        placeholder="Enter medicine's generic or brand name... " />
       <mat-icon>search</mat-icon>
     </div>
-    <!-- <mat-form-field appearance="outline">
-      <input matInput placeholder="Search for generic or brand name">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field> -->
-    <button color="primary" mat-raised-button (click)="showMedicineModal()">
-      Create
+
+    <button color="primary" mat-raised-button [routerLink]="['/medicines-add']" routerLinkActive="router-link-active">
+      Add Medicine
     </button>
 
   </div>
 
-  <div class="card">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Brand Name Column -->
+    <ng-container matColumnDef="BrandName">
+      <th mat-header-cell *matHeaderCellDef> Brand Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.BrandName}} </td>
+    </ng-container>
+
+    <!-- Generic Name Column -->
+    <ng-container matColumnDef="GenericName">
+      <th mat-header-cell *matHeaderCellDef> Generic Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.GenericName}} </td>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container matColumnDef="Size">
+      <th mat-header-cell *matHeaderCellDef> Size </th>
+      <td mat-cell *matCellDef="let element"> {{element.Size}} </td>
+    </ng-container>
+
+    <!-- UoM Column -->
+    <ng-container matColumnDef="UoM">
+      <th mat-header-cell *matHeaderCellDef> UoM </th>
+      <td mat-cell *matCellDef="let element"> {{element.UoM}} </td>
+    </ng-container>
+
+    <!-- Qty Column -->
+    <ng-container matColumnDef="Qty">
+      <th mat-header-cell *matHeaderCellDef> Stock </th>
+      <td mat-cell *matCellDef="let element"> {{element.Qty}} </td>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="Srp">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.Srp | currency:'PHP '}} </td>
+    </ng-container>
+
+    <!-- Margin Column -->
+    <ng-container matColumnDef="Margin">
+      <th mat-header-cell *matHeaderCellDef> Margin % </th>
+      <td mat-cell *matCellDef="let element"> {{element.Margin | number :'2.2'}} </td>
+    </ng-container>
+
+    <!-- Remove Column -->
+    <ng-container matColumnDef="remove" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell class="action-cell" *matCellDef="let element">
+        <button (click)="remove(element)" class="remove-button" mat-icon-button>
+          <mat-icon>close</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Edit Column -->
+    <ng-container matColumnDef="edit" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell class="action-cell" *matCellDef="let element">
+        <button (click)="update(element)" class="remove-button" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- <div class="card">
     <div class="card-body">
       <app-medicine-header></app-medicine-header>
       <app-medicine-card></app-medicine-card>
@@ -26,5 +94,5 @@
       <app-medicine-card></app-medicine-card>
       <app-medicine-card></app-medicine-card>
     </div>
-  </div>
+  </div> -->
 </div>

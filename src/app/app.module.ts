@@ -17,11 +17,14 @@ import { MatInputModule, MatMenuModule } from "@angular/material";
 import { MatSelectModule } from "@angular/material/select";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatTableModule } from "@angular/material/table";
 
-import { CreateMedicineComponent } from "./_modal/create-medicine/create-medicine.component";
 import { StoreProfileComponent } from "./screens/store-profile/store-profile.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ScheduleTimeComponent } from "./_components/schedule-time/schedule-time.component";
+import { HttpClientModule } from "@angular/common/http";
+import { MedicinesAddComponent } from "./screens/medicines-add/medicines-add.component";
+import { MedicineEntryComponent } from "./_modal/medicine-entry/medicine-entry.component";
 
 @NgModule({
   declarations: [
@@ -29,7 +32,8 @@ import { ScheduleTimeComponent } from "./_components/schedule-time/schedule-time
     MedicinesListComponent,
     MedicineCardComponent,
     MedicineHeaderComponent,
-    CreateMedicineComponent,
+    MedicinesAddComponent,
+    MedicineEntryComponent,
 
     ScheduleTimeComponent,
 
@@ -39,6 +43,7 @@ import { ScheduleTimeComponent } from "./_components/schedule-time/schedule-time
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
 
     FormsModule,
     ReactiveFormsModule,
@@ -52,10 +57,11 @@ import { ScheduleTimeComponent } from "./_components/schedule-time/schedule-time
     MatDialogModule,
     MatSelectModule,
     MatGridListModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [CreateMedicineComponent]
+  entryComponents: [MedicineEntryComponent]
 })
 export class AppModule {}

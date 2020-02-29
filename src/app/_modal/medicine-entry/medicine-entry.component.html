@@ -1,0 +1,26 @@
+<h5>{{data.BrandName}}</h5>
+<span>{{data.GenericName}}, {{data.Size}} {{data.UoM}}</span>
+
+<form [formGroup]="medForm" (submit)="save()">
+  <div class="medicine-form">
+
+    <span class="form-label">Price</span>
+    <input [ngClass]="{'input-invalid': medForm.get('Srp').invalid}" formControlName="Srp" class="form-input "
+      type="number">
+    <div *ngIf="medForm.get('Srp').invalid" class="input-invalid-message">
+      Price cannot be set to 0.
+    </div>
+
+    <span class="form-label">Margin %</span>
+    <input formControlName="Margin" class="form-input " type="number">
+
+    <span class="form-label">Quantity</span>
+    <input formControlName="Qty" class="form-input " type="number">
+  </div>
+
+  <div class="div-action mt-3">
+    <button type="submit" color="primary" class="ml-auto " mat-raised-button>
+      Save
+    </button>
+  </div>
+</form>

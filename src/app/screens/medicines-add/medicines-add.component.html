@@ -1,0 +1,125 @@
+<div class="container-fluid mt-3">
+
+  <div class="div-action">
+    <button [routerLink]="['/home']" mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h5 class="mb-3">Add Medicine</h5>
+
+  </div>
+  <form [formGroup]="searchForm">
+    <div class="div-action mb-2">
+
+      <div class="search">
+        <input #searchInput class="input-search" formControlName="search" [matAutocomplete]="auto"
+          placeholder="Enter medicine's generic or brand name to add them... ">
+        <mat-autocomplete [autoActiveFirstOption]="true" [displayWith]="displayFn" #auto="matAutocomplete">
+          <mat-option *ngFor="let medicine of filteredMedicines | async" [value]="medicine">
+            <span>{{medicine.BrandName}}</span> |
+            <small>{{medicine.GenericName}}</small>
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon>add</mat-icon>
+      </div>
+
+
+
+    </div>
+  </form>
+
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Brand Name Column -->
+    <ng-container matColumnDef="BrandName">
+      <th mat-header-cell *matHeaderCellDef> Brand Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.BrandName}} </td>
+    </ng-container>
+
+    <!-- Generic Name Column -->
+    <ng-container matColumnDef="GenericName">
+      <th mat-header-cell *matHeaderCellDef> Generic Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.GenericName}} </td>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container matColumnDef="Size">
+      <th mat-header-cell *matHeaderCellDef> Size </th>
+      <td mat-cell *matCellDef="let element"> {{element.Size}} </td>
+    </ng-container>
+
+    <!-- UoM Column -->
+    <ng-container matColumnDef="UoM">
+      <th mat-header-cell *matHeaderCellDef> UoM </th>
+      <td mat-cell *matCellDef="let element"> {{element.UoM}} </td>
+    </ng-container>
+
+    <!-- Qty Column -->
+    <ng-container matColumnDef="Qty">
+      <th class="input-cell" mat-header-cell *matHeaderCellDef> Stock </th>
+
+      <td mat-cell *matCellDef="let element">
+        <div class="input-cell" class="row-input-div">
+          <input class="row-input" type="number" [(ngModel)]="element.Qty">
+        </div>
+      </td>
+
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="Srp">
+      <th class="input-cell" mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell class="input-cell" *matCellDef="let element">
+        <div class="row-input-div">
+          <input class="row-input" type="number" [(ngModel)]="element.Srp">
+        </div>
+      </td>
+      <!-- <td mat-cell *matCellDef="let element"> {{element.Srp}} </td> -->
+    </ng-container>
+
+    <!-- Margin Column -->
+    <ng-container matColumnDef="Margin">
+      <th class="input-cell" mat-header-cell *matHeaderCellDef> Margin % </th>
+      <td mat-cell class="input-cell" *matCellDef="let element">
+        <div class="row-input-div">
+          <input class="row-input" type="number" [(ngModel)]="element.Margin">
+        </div>
+      </td>
+      <!-- <td mat-cell *matCellDef="let element"> {{element.Margin}} </td> -->
+    </ng-container>
+
+    <!-- Remove Column -->
+    <ng-container matColumnDef="remove" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell class="remove-cell" *matCellDef="let element">
+        <button (click)="remove(element)" class="remove-button" mat-icon-button>
+          <mat-icon>close</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+
+  <div class="div-action mt-3">
+
+
+    <button class="ml-auto save-button" mat-raised-button (click)="save()" routerLinkActive="router-link-active">
+      Save
+    </button>
+  </div>
+
+  <!-- <div class="card">
+    <div class="card-body">
+      <app-medicine-header></app-medicine-header>
+      <app-medicine-card></app-medicine-card>
+      <app-medicine-card></app-medicine-card>
+      <app-medicine-card></app-medicine-card>
+      <app-medicine-card></app-medicine-card>
+    </div>
+  </div> -->
+</div>
