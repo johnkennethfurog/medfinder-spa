@@ -7,6 +7,7 @@ import { HttpClient } from "@angular/common/http";
 import { Store } from "../_models/store";
 import { MessageResponse } from "../_models/message-response";
 import { map } from "rxjs/operators";
+import { Avatar } from "../_models/avatar";
 
 @Injectable({
   providedIn: "root"
@@ -64,7 +65,7 @@ export class StoreService {
   }
 
   getStoreId(): string {
-    return "5e0029d40863b32bc4dc9bc1";
+    return "5e5b855f84ade71d7953f077";
   }
 
   setStoreIds(medicines: Medicine[]) {
@@ -100,11 +101,44 @@ export class StoreService {
       );
   }
 
+  uploadAvatar(file: File, publicId: string): Observable<BaseResponse<Avatar>> {
+    const formData = new FormData();
+
+    formData.append("photo", file);
+    if (publicId) {
+      formData.append("public_id", publicId);
+    }
+    return this.httpClient.post<BaseResponse<Avatar>>(
+      this.storeUrl + "avatar",
+      formData
+    );
+  }
+
   getStore(): Store {
     return JSON.parse(localStorage.getItem("store"));
   }
 
   setStore(store: Store) {
     localStorage.setItem("store", JSON.stringify(store));
+  }
+
+  getStores(): Observable<BaseResponse<Store[]>> {
+    return this.httpClient.get<BaseResponse<Store[]>>(this.storeUrl);
+  }
+
+  registerStore(payload): Observable<BaseResponse<Store>> {
+    return this.httpClient.post<BaseResponse<Store>>(
+      this.storeUrl + "add",
+      payload
+    );
+  }
+
+  resetPassword(storeId: string): Observable<MessageResponse> {
+    return this.httpClient.put<MessageResponse>(
+      this.storeUrl + "resetpassword",
+      {
+        storeId
+      }
+    );
   }
 }

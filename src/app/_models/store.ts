@@ -1,5 +1,6 @@
 import { Medicine } from "./medicine";
 import { Schedule } from "./schedule";
+import { Avatar } from "./avatar";
 
 export interface Store {
   Location: StoreLocation;
@@ -11,6 +12,9 @@ export interface Store {
   ContactInfo: string;
   IsHealthCentre: boolean;
   Medicines: Medicine[];
+  Avatar: Avatar;
+
+  isLoading: boolean;
 }
 
 export interface StoreLocation {

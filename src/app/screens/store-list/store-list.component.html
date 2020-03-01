@@ -1,0 +1,63 @@
+<div class="container-fluid mt-3">
+
+  <h5 class="mb-3">Store's Master List</h5>
+  <form [formGroup]="searchForm">
+    <div class="div-action mb-2">
+
+      <div class="search">
+
+        <input class="input-search" formControlName="search" placeholder="Enter medicine's generic or brand name... " />
+        <mat-icon>search</mat-icon>
+      </div>
+
+      <button color="primary" mat-raised-button (click)="create()">
+        New Store
+      </button>
+
+    </div>
+  </form>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Brand Name Column -->
+    <ng-container matColumnDef="Name">
+      <th mat-header-cell *matHeaderCellDef> Store </th>
+      <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+    </ng-container>
+
+    <!-- Generic Name Column -->
+    <ng-container matColumnDef="Address">
+      <th mat-header-cell *matHeaderCellDef> Address </th>
+      <td mat-cell *matCellDef="let element"> {{element.Address}} </td>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container matColumnDef="ContactInfo">
+      <th mat-header-cell *matHeaderCellDef> Contact Info </th>
+      <td mat-cell *matCellDef="let element"> {{element.ContactInfo}} </td>
+    </ng-container>
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="Type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.IsHealthCentre ? 'Health Center' : 'Drugstore'}} </td>
+    </ng-container>
+
+    <!-- Edit Column -->
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+
+        <app-btn-loading class="action-cell" (clicked)="resetPassword(element)" [Text]="'Reset Password'"
+          [IsLoading]="element.IsLoading">
+        </app-btn-loading>
+      </td>
+    </ng-container>
+
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>

@@ -1,0 +1,4 @@
+<button class="btnLaoder" (click)="btnClick()" mat-raised-button color="primary">
+  <mat-spinner *ngIf="IsLoading" class="request-status" diameter="20"></mat-spinner>
+  <span *ngIf="!IsLoading"> {{ Text }}</span>
+</button>

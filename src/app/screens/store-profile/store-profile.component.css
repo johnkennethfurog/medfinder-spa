@@ -68,11 +68,6 @@
   align-self: flex-end;
 }
 
-.save-button {
-  align-self: flex-end;
-  margin-top: 10px;
-}
-
 .browse-button {
   position: absolute;
   right: 20px;
@@ -82,4 +77,9 @@
 .card {
   box-shadow: unset;
   /* padding: 10px; */
+}
+
+.save-button {
+  align-self: flex-end;
+  margin-top: 10px;
 }

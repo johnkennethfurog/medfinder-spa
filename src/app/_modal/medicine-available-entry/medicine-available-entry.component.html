@@ -1,0 +1,41 @@
+<h5> {{ _getTitle }}</h5>
+<form [formGroup]="medForm" (submit)="save()">
+  <div class="medicine-form">
+
+    <span class="form-label">Generic Name</span>
+    <input [ngClass]="{'input-invalid': medForm.get('GenericName').invalid}" formControlName="GenericName"
+      class="form-input ">
+    <div *ngIf="medForm.get('GenericName').invalid" class="input-invalid-message">
+      Generic name is required.
+    </div>
+
+    <span class="form-label">Brand Name</span>
+    <input [ngClass]="{'input-invalid': medForm.get('BrandName').invalid}" formControlName="BrandName"
+      class="form-input ">
+    <div *ngIf="medForm.get('BrandName').invalid" class="input-invalid-message">
+      Brand name is required.
+    </div>
+
+    <span class="form-label">Size</span>
+    <input [ngClass]="{'input-invalid': medForm.get('Size').invalid}" formControlName="Size" class="form-input "
+      type="number">
+    <div *ngIf="medForm.get('Size').invalid" class="input-invalid-message">
+      Size cannot be set to 0.
+    </div>
+
+    <span class="form-label">Unit of Measurement</span>
+    <input [ngClass]="{'input-invalid': medForm.get('UoM').invalid}" formControlName="UoM" class="form-input ">
+    <div *ngIf="medForm.get('UoM').invalid" class="input-invalid-message">
+      Unit of measurement is required.
+    </div>
+
+    <mat-checkbox [color]="'primary'" formControlName="NeedPresription">Need Prescription</mat-checkbox>
+  </div>
+
+  <div class="div-action mt-3">
+    <app-btn-loading class="ml-auto" (clicked)="save()" [Text]="'Save'" [IsLoading]="isLoading">
+    </app-btn-loading>
+
+  </div>
+
+</form>

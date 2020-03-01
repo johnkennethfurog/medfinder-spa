@@ -1,6 +1,9 @@
 <mat-toolbar class="elevation" color="primary">
   <mat-toolbar-row>
     <span class="nav-icon" [routerLink]="['/home']">MED-finder</span>
+    <a href="#" class="nav-item" [routerLink]="['/medicines-available']"
+      routerLinkActive="router-link-active">Medicines</a>
+    <a href="#" class="nav-item" [routerLink]="['/store-list']" routerLinkActive="router-link-active">Stores</a>
     <span class="spacer"></span>
     <span class="user">John Kenneth Furog</span>
     <button mat-icon-button [matMenuTriggerFor]="menu">

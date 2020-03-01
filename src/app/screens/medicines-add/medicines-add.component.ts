@@ -28,6 +28,16 @@ import { Router } from "@angular/router";
   styleUrls: ["./medicines-add.component.css"]
 })
 export class MedicinesAddComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = [
+    "GenericName",
+    "BrandName",
+    "Size",
+    "UoM",
+    "Srp",
+    "Margin",
+    "Qty",
+    "remove"
+  ];
   dataSource;
 
   searchForm: FormGroup;
@@ -39,16 +49,7 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
   medicinesToAdd: Medicine[] = [];
   storeMedicineIds: string[];
 
-  displayedColumns: string[] = [
-    "GenericName",
-    "BrandName",
-    "Size",
-    "UoM",
-    "Srp",
-    "Margin",
-    "Qty",
-    "remove"
-  ];
+  isLoading = false;
 
   constructor(
     private medicineService: MedicineService,
@@ -75,7 +76,6 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
 
   subscribeToSearchValueChange() {
     const searchControl = this.searchForm.get("search") as FormControl;
-    console.log("searchControl", searchControl);
 
     this.filteredMedicines = searchControl.valueChanges.pipe(
       startWith(""),
@@ -140,11 +140,19 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
   }
 
   save() {
+    if (this.isLoading) {
+      return;
+    }
+
+    this.isLoading = true;
     this.storeService.addMedicines(this.medicinesToAdd).subscribe(
       rspns => {
+        this.isLoading = false;
         this.router.navigate(["home"]);
       },
-      error => {}
+      error => {
+        this.isLoading = false;
+      }
     );
   }
 

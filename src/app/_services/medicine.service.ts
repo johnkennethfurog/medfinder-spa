@@ -18,4 +18,30 @@ export class MedicineService {
       this.medicineUrl + "all"
     );
   }
+
+  addMedicine(
+    medicine: MedicineAvailable
+  ): Observable<BaseResponse<MedicineAvailable>> {
+    return this.httpClient.post<BaseResponse<MedicineAvailable>>(
+      this.medicineUrl,
+      medicine
+    );
+  }
+
+  updateMedicine(
+    medicine: MedicineAvailable
+  ): Observable<BaseResponse<MedicineAvailable>> {
+    return this.httpClient.put<BaseResponse<MedicineAvailable>>(
+      this.medicineUrl,
+      medicine
+    );
+  }
+
+  deleteMedicine(
+    medicine: MedicineAvailable
+  ): Observable<BaseResponse<MedicineAvailable>> {
+    return this.httpClient.delete<BaseResponse<MedicineAvailable>>(
+      this.medicineUrl + medicine._id
+    );
+  }
 }

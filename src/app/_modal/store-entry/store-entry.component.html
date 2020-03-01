@@ -1,0 +1,32 @@
+<h5> {{ _getTitle }}</h5>
+<form [formGroup]="storeForm" (submit)="save()">
+  <div class="medicine-form">
+
+    <span class="form-label">Store</span>
+    <input [ngClass]="{'input-invalid': storeForm.get('Name').invalid}" formControlName="Name" class="form-input ">
+    <div *ngIf="storeForm.get('Name').invalid" class="input-invalid-message">
+      Store name is required.
+    </div>
+
+    <span class="form-label">Email Address</span>
+    <input [ngClass]="{'input-invalid': storeForm.get('Email').invalid}" formControlName="Email" class="form-input ">
+    <div *ngIf="storeForm.get('Email').invalid" class="input-invalid-message">
+      Email Address is required.
+    </div>
+
+    <span class="form-label">Address</span>
+    <textarea rows="5" formControlName="Address" class="form-input "></textarea>
+
+    <span class="form-label">Contact Information</span>
+    <input formControlName="ContactInfo" class="form-input ">
+
+    <mat-checkbox [color]="'primary'" formControlName="IsHealthCentre">Is Health Center</mat-checkbox>
+  </div>
+
+  <div class="div-action mt-3">
+    <app-btn-loading class="ml-auto" (clicked)="save()" [Text]="'Save'" [IsLoading]="isLoading">
+    </app-btn-loading>
+
+  </div>
+
+</form>

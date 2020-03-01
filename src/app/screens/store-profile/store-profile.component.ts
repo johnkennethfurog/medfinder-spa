@@ -5,7 +5,12 @@ import {
   ViewChild,
   AfterViewInit
 } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { DARK_THEME } from "../../_utils/dark-theme.js";
 import { StoreService } from "src/app/_services/store.service.js";
 import { Store } from "src/app/_models/store.js";
@@ -82,33 +87,46 @@ export class StoreProfileComponent implements AfterViewInit {
   }
 
   setFormValue() {
-    const storeLocation = new google.maps.LatLng(
-      this.store.Location.coordinates[1],
-      this.store.Location.coordinates[0]
-    );
-
     this.storeProfileForm.get("_id").setValue(this.store._id);
     this.storeProfileForm.get("Name").setValue(this.store.Name);
     this.storeProfileForm.get("Address").setValue(this.store.Address);
     this.storeProfileForm.get("Location").setValue(this.store.Location);
     this.storeProfileForm.get("ContactInfo").setValue(this.store.ContactInfo);
-    this.storeProfileForm.get("Avatar").setValue("");
+    this.storeProfileForm.get("Avatar").setValue(this.store.Avatar);
 
-    this._getScheduleForm.get("mon").setValue(this.store.Schedule.mon);
-    this._getScheduleForm.get("tue").setValue(this.store.Schedule.tue);
-    this._getScheduleForm.get("wed").setValue(this.store.Schedule.wed);
-    this._getScheduleForm.get("thu").setValue(this.store.Schedule.thu);
-    this._getScheduleForm.get("fri").setValue(this.store.Schedule.fri);
-    this._getScheduleForm.get("sat").setValue(this.store.Schedule.sat);
-    this._getScheduleForm.get("sun").setValue(this.store.Schedule.sun);
+    if (this.store.Schedule) {
+      this._getScheduleForm.get("mon").setValue(this.store.Schedule.mon);
+      this._getScheduleForm.get("tue").setValue(this.store.Schedule.tue);
+      this._getScheduleForm.get("wed").setValue(this.store.Schedule.wed);
+      this._getScheduleForm.get("thu").setValue(this.store.Schedule.thu);
+      this._getScheduleForm.get("fri").setValue(this.store.Schedule.fri);
+      this._getScheduleForm.get("sat").setValue(this.store.Schedule.sat);
+      this._getScheduleForm.get("sun").setValue(this.store.Schedule.sun);
+    }
 
-    this.setLocationSelected(storeLocation);
+    if (this.store.Location) {
+      const storeLocation = new google.maps.LatLng(
+        this.store.Location.coordinates[1],
+        this.store.Location.coordinates[0]
+      );
+
+      this.setLocationSelected(storeLocation);
+    }
 
     console.log("this.storeProfileForm", this.storeProfileForm.value);
   }
 
   _getDayForm(day): FormGroup {
     return this._getScheduleForm.get(day) as FormGroup;
+  }
+
+  _getStoreProfile() {
+    const avatar = this.storeProfileForm.get("Avatar").value;
+    if (!avatar || avatar instanceof File) {
+      return this.imgURL;
+    } else {
+      return avatar.url;
+    }
   }
 
   addScheduleTime(scheedule: ScheduleTime): FormGroup {
@@ -260,8 +278,7 @@ export class StoreProfileComponent implements AfterViewInit {
     if (mimeType.match(/image\/*/) == null) {
       return;
     }
-
-    this.selectedFile = files[0];
+    this.storeProfileForm.get("Avatar").setValue(files[0]);
 
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
@@ -276,6 +293,16 @@ export class StoreProfileComponent implements AfterViewInit {
     }
 
     this.isLoading = true;
+
+    const avatar = this.storeProfileForm.get("Avatar").value;
+    if (avatar instanceof File) {
+      this.uploadPhoto(avatar);
+    } else {
+      this.saveStoreProfile();
+    }
+  }
+
+  saveStoreProfile() {
     this.storeService.updateStoreProfile(this.storeProfileForm.value).subscribe(
       rspns => {
         this.isLoading = false;
@@ -285,7 +312,18 @@ export class StoreProfileComponent implements AfterViewInit {
         this.isLoading = false;
       }
     );
+  }
 
-    console.log(this.storeProfileForm.value);
+  uploadPhoto(file: File) {
+    const publicId = this.store.Avatar ? this.store.Avatar.public_id : null;
+
+    this.storeService.uploadAvatar(file, publicId).subscribe(
+      rspns => {
+        this.storeProfileForm.get("Avatar").setValue(rspns.data);
+        this.store.Avatar = rspns.data;
+        this.saveStoreProfile();
+      },
+      error => {}
+    );
   }
 }
