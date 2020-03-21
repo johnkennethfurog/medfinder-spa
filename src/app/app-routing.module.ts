@@ -5,6 +5,7 @@ import { StoreProfileComponent } from "./screens/store-profile/store-profile.com
 import { MedicinesAddComponent } from "./screens/medicines-add/medicines-add.component";
 import { MedicinesAvailableListComponent } from "./screens/medicines-available-list/medicines-available-list.component";
 import { StoreListComponent } from "./screens/store-list/store-list.component";
+import { SignInComponent } from "./screens/sign-in/sign-in.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: "medicines-available",
     component: MedicinesAvailableListComponent
+  },
+  {
+    path: "sign-in",
+    component: SignInComponent
   },
   {
     path: "**",

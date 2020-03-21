@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: "http://localhost:3000/v1/"
+  // baseUrl: "http://localhost:3000/v1/"
+  baseUrl: "https://med-finder.herokuapp.com/v1/"
 };
 
 /*

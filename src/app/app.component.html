@@ -1,17 +1,19 @@
 <mat-toolbar class="elevation" color="primary">
   <mat-toolbar-row>
-    <span class="nav-icon" [routerLink]="['/home']">MED-finder</span>
-    <a href="#" class="nav-item" [routerLink]="['/medicines-available']"
+    <span class="nav-icon" (click)="gotoHome()">MED-finder</span>
+    <a href="#" *ngIf="_isAdmin" class="nav-item" [routerLink]="['/medicines-available']"
       routerLinkActive="router-link-active">Medicines</a>
-    <a href="#" class="nav-item" [routerLink]="['/store-list']" routerLinkActive="router-link-active">Stores</a>
+    <a href="#" *ngIf="_isAdmin" class="nav-item" [routerLink]="['/store-list']"
+      routerLinkActive="router-link-active">Stores</a>
     <span class="spacer"></span>
-    <span class="user">John Kenneth Furog</span>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
+    <span *ngIf="_isSignedIn" class="user">{{_usersEmail}}</span>
+    <button *ngIf="_isSignedIn" mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="['/profile']">Store Profile</button>
-      <button mat-menu-item>Logout</button>
+      <button *ngIf="!_isAdmin" mat-menu-item [routerLink]="['/profile']">Store Profile</button>
+      <button (click)="changePassword()" mat-menu-item>Change Password</button>
+      <button (click)="signout()" mat-menu-item>Logout</button>
     </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>

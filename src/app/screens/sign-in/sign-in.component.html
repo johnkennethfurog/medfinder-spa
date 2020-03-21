@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+
+      <form [formGroup]="signinForm" (submit)="signin()">
+        <div class="medicine-form">
+          <span class="form-label">Email</span>
+          <input type="email"
+            [ngClass]="{'input-invalid': signinForm.get('email').invalid && signinForm.get('email').touched}"
+            formControlName="email" class="form-input ">
+
+          <span class="form-label">Password</span>
+          <input type="password"
+            [ngClass]="{'input-invalid': signinForm.get('pass').invalid && signinForm.get('email').touched}"
+            formControlName="pass" class="form-input ">
+
+        </div>
+
+
+        <div class="div-action mt-3">
+          <app-btn-loading class="ml-auto" [IsLoading]="isLoading" [Text]="'Login'"></app-btn-loading>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

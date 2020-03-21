@@ -13,6 +13,7 @@ export interface Store {
   IsHealthCentre: boolean;
   Medicines: Medicine[];
   Avatar: Avatar;
+  IsAdminAccount: boolean;
 
   isLoading: boolean;
 }

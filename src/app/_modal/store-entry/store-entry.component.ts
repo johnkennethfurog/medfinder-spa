@@ -10,12 +10,7 @@ import { MatDialogRef } from "@angular/material";
 })
 export class StoreEntryComponent implements OnInit {
   storeForm: FormGroup;
-  isCreatingNew = false;
   isLoading = false;
-
-  get _getTitle(): string {
-    return this.isCreatingNew ? "Create" : "Update";
-  }
 
   constructor(
     private storeService: StoreService,

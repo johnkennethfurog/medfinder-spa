@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/alertifyjs/build/css/alertify.min.css";
+@import "../node_modules/alertifyjs/build/css/themes/bootstrap.min.css";
 
 .main-color {
   background-color: #383c48;
@@ -20,45 +22,9 @@ button:focus {
   outline: none;
 }
 
-.mat-row {
-  margin-right: -20px;
-  margin-left: -20px;
-  border-top-color: rgba(0, 0, 0, 0.12);
-  border-top-width: 1px;
-  border-top-style: solid;
-  line-height: 48px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.card-content {
-  color: rgba(0, 0, 0, 0.87);
-  font-size: 13px;
-}
-
-.table-card-header {
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 12px;
-  font-weight: 500;
-}
-
 .ok-button {
   background-color: #ffbd3d;
   color: #211f1c;
-}
-
-.card {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px,
-    rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
-
-  border: unset;
-  margin-bottom: 20px;
-  border-radius: 0;
-}
-
-.card-body {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
 }
 
 .form-footer {
@@ -105,4 +71,18 @@ table {
 .input-invalid-message {
   font-size: 12px;
   color: red;
+}
+
+.medicine-form {
+  display: flex;
+  flex-direction: column;
+}
+.form-label {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.form-input {
+  height: 40px;
+  padding-left: 5px;
 }

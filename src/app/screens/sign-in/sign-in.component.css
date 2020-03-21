@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.label {
+  font-size: 12px;
+}
+
+.card {
+  min-width: 420px;
+  margin-bottom: 100px;
+}
+
+@media (max-width: 500px) {
+  .card {
+    min-width: 90%;
+  }
+}

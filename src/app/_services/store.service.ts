@@ -19,9 +19,7 @@ export class StoreService {
 
   getMedicines(): Observable<BaseResponse<Store>> {
     return this.httpClient
-      .get<BaseResponse<Store>>(
-        this.storeUrl + "medicines/" + this.getStoreId()
-      )
+      .get<BaseResponse<Store>>(this.storeUrl + "medicines/")
       .pipe(
         map(rspns => {
           this.setStoreIds(rspns.data.Medicines);
@@ -32,9 +30,7 @@ export class StoreService {
   }
 
   addMedicines(medicines: Medicine[]): Observable<MessageResponse> {
-    const storeId = this.getStoreId();
     const payload = {
-      storeId,
       medicines
     };
 
@@ -45,9 +41,7 @@ export class StoreService {
   }
 
   updateMedicine(medicine: Medicine): Observable<MessageResponse> {
-    const storeId = this.getStoreId();
     const payload = {
-      storeId,
       medicine
     };
 
@@ -58,14 +52,9 @@ export class StoreService {
   }
 
   removeMedicine(medicine: Medicine): Observable<MessageResponse> {
-    const storeId = this.getStoreId();
     return this.httpClient.delete<MessageResponse>(
-      `${this.storeUrl}medicine/${storeId}/${medicine.MedicineId}`
+      `${this.storeUrl}medicine/${medicine.MedicineId}`
     );
-  }
-
-  getStoreId(): string {
-    return "5e5b855f84ade71d7953f077";
   }
 
   setStoreIds(medicines: Medicine[]) {
@@ -78,9 +67,8 @@ export class StoreService {
   }
 
   getStoreProfile(): Observable<BaseResponse<Store>> {
-    const storeId = this.getStoreId();
     return this.httpClient
-      .get<BaseResponse<Store>>(this.storeUrl + "profile/" + storeId)
+      .get<BaseResponse<Store>>(this.storeUrl + "profile/")
       .pipe(
         map(rspns => {
           this.setStore(rspns.data);
@@ -90,7 +78,6 @@ export class StoreService {
   }
 
   updateStoreProfile(store: Store): Observable<BaseResponse<Store>> {
-    const storeId = this.getStoreId();
     return this.httpClient
       .put<BaseResponse<Store>>(this.storeUrl + "profile/", store)
       .pipe(

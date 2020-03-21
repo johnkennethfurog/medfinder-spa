@@ -27,7 +27,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { StoreProfileComponent } from "./screens/store-profile/store-profile.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ScheduleTimeComponent } from "./_components/schedule-time/schedule-time.component";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { MedicinesAddComponent } from "./screens/medicines-add/medicines-add.component";
 import { MedicineEntryComponent } from "./_modal/medicine-entry/medicine-entry.component";
 import { BtnLoadingComponent } from "./_components/btn-loading/btn-loading.component";
@@ -35,10 +35,16 @@ import { MedicinesAvailableListComponent } from "./screens/medicines-available-l
 import { MedicineAvailableEntryComponent } from "./_modal/medicine-available-entry/medicine-available-entry.component";
 import { StoreEntryComponent } from "./_modal/store-entry/store-entry.component";
 import { StoreListComponent } from "./screens/store-list/store-list.component";
+import { SignInComponent } from "./screens/sign-in/sign-in.component";
+import { ChangePasswordComponent } from "./_modal/change-password/change-password.component";
+import { TokenInterceptor } from "./_utils/token-interceptor";
 
 @NgModule({
   declarations: [
     AppComponent,
+    SignInComponent,
+    ChangePasswordComponent,
+
     MedicinesAvailableListComponent,
     MedicinesListComponent,
     MedicineCardComponent,
@@ -79,12 +85,15 @@ import { StoreListComponent } from "./screens/store-list/store-list.component";
     MatTableModule,
     MatCheckboxModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     MedicineEntryComponent,
     MedicineAvailableEntryComponent,
-    StoreEntryComponent
+    StoreEntryComponent,
+    ChangePasswordComponent
   ]
 })
 export class AppModule {}
