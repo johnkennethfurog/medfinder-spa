@@ -6,37 +6,45 @@ import { MedicinesAddComponent } from "./screens/medicines-add/medicines-add.com
 import { MedicinesAvailableListComponent } from "./screens/medicines-available-list/medicines-available-list.component";
 import { StoreListComponent } from "./screens/store-list/store-list.component";
 import { SignInComponent } from "./screens/sign-in/sign-in.component";
+import { AuthenticationGuard } from "./_guard/authenticationGuard";
+import { IsLoggedinGuard } from "./_guard/isLoggedinGuard";
 
 const routes: Routes = [
   {
     path: "profile",
-    component: StoreProfileComponent
+    component: StoreProfileComponent,
+    canActivate: [AuthenticationGuard],
   },
   {
     path: "medicines-add",
-    component: MedicinesAddComponent
+    component: MedicinesAddComponent,
+    canActivate: [AuthenticationGuard],
   },
 
   {
     path: "store-list",
-    component: StoreListComponent
+    component: StoreListComponent,
+    canActivate: [AuthenticationGuard],
   },
   {
     path: "medicines-available",
-    component: MedicinesAvailableListComponent
+    component: MedicinesAvailableListComponent,
+    canActivate: [AuthenticationGuard],
   },
   {
     path: "sign-in",
-    component: SignInComponent
+    component: SignInComponent,
+    canActivate: [IsLoggedinGuard],
   },
   {
     path: "**",
-    component: MedicinesListComponent
-  }
+    component: MedicinesListComponent,
+    canActivate: [AuthenticationGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

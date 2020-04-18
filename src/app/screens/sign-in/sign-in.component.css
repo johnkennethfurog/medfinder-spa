@@ -14,6 +14,23 @@
   margin-bottom: 100px;
 }
 
+.title-row {
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.med {
+  font-size: 30px;
+  font-weight: bold;
+  color: #2d3b8c;
+}
+
+.finder {
+  font-size: 23px;
+  margin-bottom: 3px;
+  color: #383838;
+}
+
 @media (max-width: 500px) {
   .card {
     min-width: 90%;

@@ -8,7 +8,7 @@ import { Validate } from "../../_utils/reactiveFormHelper.js";
 @Component({
   selector: "app-sign-in",
   templateUrl: "./sign-in.component.html",
-  styleUrls: ["./sign-in.component.css"]
+  styleUrls: ["./sign-in.component.css"],
 })
 export class SignInComponent implements OnInit {
   signinForm: FormGroup;
@@ -29,7 +29,7 @@ export class SignInComponent implements OnInit {
   initializeForm() {
     this.signinForm = this.fb.group({
       email: this.fb.control("", Validators.required),
-      pass: this.fb.control("", Validators.required)
+      pass: this.fb.control("", Validators.required),
     });
   }
 
@@ -48,7 +48,7 @@ export class SignInComponent implements OnInit {
     this.isLoading = true;
 
     this.authService.signin(this.signinForm.value).subscribe(
-      rspns => {
+      (rspns) => {
         this.alertifyService.success(rspns.message);
         this.isLoading = false;
         if (this.authService.isAdmin) {
@@ -57,7 +57,7 @@ export class SignInComponent implements OnInit {
           this.router.navigate(["medicines"]);
         }
       },
-      error => {
+      (error) => {
         this.alertifyService.error(error.error.message);
         this.isLoading = false;
       }

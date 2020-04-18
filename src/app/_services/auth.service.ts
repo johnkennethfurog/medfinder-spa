@@ -43,7 +43,7 @@ export class AuthService {
     return this.httpClient
       .post<BaseResponse<Token>>(this.storeUrl + "signin", payload)
       .pipe(
-        map(rspns => {
+        map((rspns) => {
           const { IsAdminAccount } = rspns.data.user;
 
           localStorage.setItem("isAdmin", JSON.stringify(IsAdminAccount));

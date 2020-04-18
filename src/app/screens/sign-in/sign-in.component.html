@@ -3,6 +3,12 @@
     <div class="card-body">
 
       <form [formGroup]="signinForm" (submit)="signin()">
+
+        <div class="row  title-row">
+          <span class="med">MED</span>
+          <span class="finder">finder</span>
+        </div>
+
         <div class="medicine-form">
           <span class="form-label">Email</span>
           <input type="email"
