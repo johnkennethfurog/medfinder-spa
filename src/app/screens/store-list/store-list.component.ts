@@ -5,11 +5,12 @@ import { MatDialog, MatTableDataSource } from "@angular/material";
 import { StoreService } from "src/app/_services/store.service";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { StoreEntryComponent } from "src/app/_modal/store-entry/store-entry.component";
+import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
   selector: "app-store-list",
   templateUrl: "./store-list.component.html",
-  styleUrls: ["./store-list.component.css"]
+  styleUrls: ["./store-list.component.css"],
 })
 export class StoreListComponent implements OnInit {
   displayedColumns: string[] = [
@@ -17,7 +18,7 @@ export class StoreListComponent implements OnInit {
     "Address",
     "ContactInfo",
     "Type",
-    "edit"
+    "edit",
   ];
   searchForm: FormGroup;
 
@@ -28,7 +29,8 @@ export class StoreListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private alertify: AlertifyService
   ) {}
 
   ngOnInit() {
@@ -38,19 +40,19 @@ export class StoreListComponent implements OnInit {
 
   initializeForm() {
     this.searchForm = this.fb.group({
-      search: this.fb.control("")
+      search: this.fb.control(""),
     });
 
     this.searchForm
       .get("search")
       .valueChanges.pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe(keyword => {
+      .subscribe((keyword) => {
         this.applyFilter(keyword);
       });
   }
 
   loadStores() {
-    this.storeService.getStores().subscribe(rspns => {
+    this.storeService.getStores().subscribe((rspns) => {
       this.stores = rspns.data;
       this.dataSource = new MatTableDataSource(this.stores);
     });
@@ -63,10 +65,10 @@ export class StoreListComponent implements OnInit {
 
   create() {
     const medicineEntryDialog = this.dialog.open(StoreEntryComponent, {
-      width: "520px"
+      width: "520px",
     });
 
-    medicineEntryDialog.afterClosed().subscribe(newStore => {
+    medicineEntryDialog.afterClosed().subscribe((newStore) => {
       if (newStore) {
         this.stores.push(newStore);
         this.dataSource = new MatTableDataSource(this.stores);
@@ -82,11 +84,14 @@ export class StoreListComponent implements OnInit {
 
     store.isLoading = true;
     this.storeService.resetPassword(store._id).subscribe(
-      rsps => {
+      (rsps) => {
+        this.alertify.success("Password has been resets");
         store.isLoading = false;
       },
-      error => {
-        console.log("error");
+      (error) => {
+        if (error.error.message) {
+          this.alertify.error(error.error.message);
+        }
         store.isLoading = false;
       }
     );

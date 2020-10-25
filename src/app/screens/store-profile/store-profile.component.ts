@@ -3,23 +3,24 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
 } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl
+  FormControl,
 } from "@angular/forms";
 import { DARK_THEME } from "../../_utils/dark-theme.js";
 import { StoreService } from "src/app/_services/store.service.js";
 import { Store } from "src/app/_models/store.js";
 import { ScheduleTime } from "src/app/_models/schedule.js";
+import { AlertifyService } from "src/app/_services/alertify.service.js";
 
 @Component({
   selector: "app-store-profile",
   templateUrl: "./store-profile.component.html",
-  styleUrls: ["./store-profile.component.css"]
+  styleUrls: ["./store-profile.component.css"],
 })
 export class StoreProfileComponent implements AfterViewInit {
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
@@ -41,24 +42,28 @@ export class StoreProfileComponent implements AfterViewInit {
     center: this.santarRosaCoordinates,
     zoom: 13,
     styles: DARK_THEME,
-    disableDefaultUI: true
+    disableDefaultUI: true,
   };
 
   markers: google.maps.Marker[] = [];
   storeProfileForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private storeService: StoreService) {
+  constructor(
+    private fb: FormBuilder,
+    private storeService: StoreService,
+    private alertify: AlertifyService
+  ) {
     this.initializeForm();
     this.fetchProfile();
   }
 
   fetchProfile() {
     this.storeService.getStoreProfile().subscribe(
-      rspns => {
+      (rspns) => {
         this.store = rspns.data;
         this.setFormValue();
       },
-      error => {}
+      (error) => {}
     );
   }
 
@@ -77,8 +82,8 @@ export class StoreProfileComponent implements AfterViewInit {
         thu: this.addScheduleTime({ From: "", To: "" }),
         fri: this.addScheduleTime({ From: "", To: "" }),
         sat: this.addScheduleTime({ From: "", To: "" }),
-        sun: this.addScheduleTime({ From: "", To: "" })
-      })
+        sun: this.addScheduleTime({ From: "", To: "" }),
+      }),
     });
   }
 
@@ -132,7 +137,7 @@ export class StoreProfileComponent implements AfterViewInit {
   addScheduleTime(scheedule: ScheduleTime): FormGroup {
     return this.fb.group({
       From: this.fb.control(scheedule.From),
-      To: this.fb.control(scheedule.To)
+      To: this.fb.control(scheedule.To),
     });
   }
 
@@ -143,28 +148,8 @@ export class StoreProfileComponent implements AfterViewInit {
   mapInitializer() {
     this.map = new google.maps.Map(this.gmap.nativeElement, this.mapOption);
 
-    // add marker
-    // const marker = new google.maps.Marker({
-    //   map: this.map,
-    //   // icon: image,
-    //   title: "Santa Rosa Laguna",
-    //   position: this.santarRosaCoordinates
-    // });
-
-    // add radius
-    // const cityCircle = new google.maps.Circle({
-    //   strokeColor: "#FF0000",
-    //   strokeOpacity: 0.8,
-    //   strokeWeight: 2,
-    //   fillColor: "#FF0000",
-    //   fillOpacity: 0.35,
-    //   map: this.map,
-    //   center: this.santarRosaCoordinates,
-    //   radius: 6000
-    // });
-
     // click event
-    this.map.addListener("click", e => {
+    this.map.addListener("click", (e) => {
       this.setLocationSelected(e.latLng);
     });
   }
@@ -185,7 +170,7 @@ export class StoreProfileComponent implements AfterViewInit {
       icon: markerIcon,
       title: "This is your store",
       position: location,
-      animation: google.maps.Animation.BOUNCE
+      animation: google.maps.Animation.BOUNCE,
     });
 
     this.locationSelected(location);
@@ -194,7 +179,7 @@ export class StoreProfileComponent implements AfterViewInit {
   locationSelected(location: google.maps.LatLng) {
     this.storeProfileForm.get("Location").setValue({
       type: "Point",
-      coordinates: [location.lng(), location.lat()]
+      coordinates: [location.lng(), location.lat()],
     });
     this.map.setZoom(15);
     this.map.setCenter(location);
@@ -211,7 +196,7 @@ export class StoreProfileComponent implements AfterViewInit {
     }
 
     // clear markers
-    this.markers.map(marker => marker.setMap(null));
+    this.markers.map((marker) => marker.setMap(null));
     this.markers = [];
 
     const name = this.storeProfileForm.get("Name").value;
@@ -221,7 +206,7 @@ export class StoreProfileComponent implements AfterViewInit {
       keyword,
       location: this.santarRosaCoordinates,
       radius: 5000,
-      type: "drugstore"
+      type: "drugstore",
     };
 
     const service = new google.maps.places.PlacesService(this.map);
@@ -236,17 +221,17 @@ export class StoreProfileComponent implements AfterViewInit {
 
   createMarkers(places) {
     const bounds = new google.maps.LatLngBounds();
-    places.map(place => {
+    places.map((place) => {
       const markerIcon = this.createMarkerIcon("store.png");
 
       const marker = new google.maps.Marker({
         map: this.map,
         icon: markerIcon,
         title: place.name,
-        position: place.geometry.location
+        position: place.geometry.location,
       });
 
-      marker.addListener("click", e => {
+      marker.addListener("click", (e) => {
         this.setLocationSelected(marker.getPosition());
         //        this.locationSelected(marker.getPosition());
       });
@@ -265,7 +250,7 @@ export class StoreProfileComponent implements AfterViewInit {
       size: new google.maps.Size(75, 75),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(50, 50)
+      scaledSize: new google.maps.Size(50, 50),
     };
   }
 
@@ -282,7 +267,7 @@ export class StoreProfileComponent implements AfterViewInit {
 
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
-    reader.onload = evnt => {
+    reader.onload = (evnt) => {
       this.imgURL = reader.result;
     };
   }
@@ -304,11 +289,15 @@ export class StoreProfileComponent implements AfterViewInit {
 
   saveStoreProfile() {
     this.storeService.updateStoreProfile(this.storeProfileForm.value).subscribe(
-      rspns => {
+      (rspns) => {
         this.isLoading = false;
+        this.alertify.success("Store profile updated");
       },
-      error => {
-        console.log("error", error);
+      (error) => {
+        if (error.error.message) {
+          this.alertify.error(error.error.message);
+        }
+
         this.isLoading = false;
       }
     );
@@ -318,12 +307,12 @@ export class StoreProfileComponent implements AfterViewInit {
     const publicId = this.store.Avatar ? this.store.Avatar.public_id : null;
 
     this.storeService.uploadAvatar(file, publicId).subscribe(
-      rspns => {
+      (rspns) => {
         this.storeProfileForm.get("Avatar").setValue(rspns.data);
         this.store.Avatar = rspns.data;
         this.saveStoreProfile();
       },
-      error => {}
+      (error) => {}
     );
   }
 }
