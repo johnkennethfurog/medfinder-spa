@@ -1,5 +1,5 @@
-<h5>{{data.BrandName}}</h5>
-<span>{{data.GenericName}}, {{data.Size}} {{data.UoM}}</span>
+<h5>{{medicine.BrandName}}</h5>
+<span>{{medicine.GenericName}}, {{medicine.Size}} {{medicine.UoM}}</span>
 
 <form [formGroup]="medForm" (submit)="save()">
   <div class="medicine-form">
@@ -16,6 +16,10 @@
 
     <span class="form-label">Quantity</span>
     <input formControlName="Qty" class="form-input " type="number">
+
+    <mat-checkbox *ngIf="isHealthCenter" formControlName="isFree" (change)="onIsFreeChange($event.checked)">
+      Medicine is free
+    </mat-checkbox>
   </div>
 
   <div class="div-action mt-3">

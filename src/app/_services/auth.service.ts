@@ -39,6 +39,10 @@ export class AuthService {
     return localStorage.getItem("email");
   }
 
+  get isHealthCentre(): boolean {
+    return JSON.parse(localStorage.getItem("isHealthCenter"));
+  }
+
   signin(payload: PayloadSignin): Observable<BaseResponse<Token>> {
     return this.httpClient
       .post<BaseResponse<Token>>(this.storeUrl + "signin", payload)
@@ -49,12 +53,16 @@ export class AuthService {
           localStorage.setItem("isAdmin", JSON.stringify(IsAdminAccount));
           localStorage.setItem("token", rspns.data.authToken);
           localStorage.setItem("email", rspns.data.user.Email);
+          localStorage.setItem(
+            "isHealthCenter",
+            JSON.stringify(rspns.data.user.IsHealthCentre)
+          );
           return rspns;
         })
       );
   }
 
-  getStoredAccessToken() {
+  getStoredAccessToken(): string {
     return localStorage.getItem("token");
   }
 

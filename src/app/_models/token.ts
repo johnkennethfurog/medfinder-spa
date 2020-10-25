@@ -9,4 +9,5 @@ export interface User {
   Email: string;
   IsAdminAccount: boolean;
   Store: string;
+  IsHealthCentre: boolean;
 }

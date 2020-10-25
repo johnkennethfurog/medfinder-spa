@@ -3,7 +3,7 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
 } from "@angular/core";
 import { MedicineAvailable } from "src/app/_models/medicine-available";
 import { MedicineService } from "src/app/_services/medicine.service";
@@ -13,7 +13,7 @@ import {
   debounce,
   debounceTime,
   distinctUntilChanged,
-  map
+  map,
 } from "rxjs/operators";
 import { Medicine } from "src/app/_models/medicine";
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
@@ -21,11 +21,12 @@ import { MatTableDataSource, MatDialog } from "@angular/material";
 import { MedicineEntryComponent } from "src/app/_modal/medicine-entry/medicine-entry.component";
 import { StoreService } from "src/app/_services/store.service";
 import { Router } from "@angular/router";
+import { AuthService } from "src/app/_services/auth.service";
 
 @Component({
   selector: "app-medicines-add",
   templateUrl: "./medicines-add.component.html",
-  styleUrls: ["./medicines-add.component.css"]
+  styleUrls: ["./medicines-add.component.css"],
 })
 export class MedicinesAddComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
@@ -36,7 +37,7 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
     "Srp",
     "Margin",
     "Qty",
-    "remove"
+    "remove",
   ];
   dataSource;
 
@@ -56,7 +57,8 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
     private storeService: StoreService,
     private fb: FormBuilder,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) {
     this.storeMedicineIds = storeService.getStoreMedicineIds();
   }
@@ -68,7 +70,7 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
 
   initializeForm() {
     this.searchForm = this.fb.group({
-      search: this.fb.control("")
+      search: this.fb.control(""),
     });
   }
 
@@ -81,7 +83,7 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
       startWith(""),
       debounceTime(400),
       distinctUntilChanged(),
-      map(value => {
+      map((value) => {
         if (value && value.constructor.name === "Object") {
           this.addMedicineToList(value);
           return;
@@ -98,15 +100,18 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
     const medicineEntryDialog = this.dialog.open(MedicineEntryComponent, {
       width: "520px",
       data: {
-        ...medicine,
-        MedicineId: medicine._id,
-        Srp: 0,
-        Margin: 0,
-        Qty: 0
-      }
+        med: {
+          ...medicine,
+          MedicineId: medicine._id,
+          Srp: 0,
+          Margin: 0,
+          Qty: 0,
+        },
+        sHealthCenter: this.authService.isHealthCentre,
+      },
     });
 
-    medicineEntryDialog.afterClosed().subscribe(addedMedicine => {
+    medicineEntryDialog.afterClosed().subscribe((addedMedicine) => {
       if (addedMedicine) {
         this.medicinesToAdd.push(addedMedicine);
         this.dataSource = new MatTableDataSource(this.medicinesToAdd);
@@ -117,14 +122,14 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
 
   private _filterMedicines(value): MedicineAvailable[] {
     const filteredAvailableMedicines = this.availableMedicines.filter(
-      med =>
-        this.medicinesToAdd.findIndex(x => x.MedicineId === med._id) < 0 &&
+      (med) =>
+        this.medicinesToAdd.findIndex((x) => x.MedicineId === med._id) < 0 &&
         !this.storeMedicineIds.includes(med._id)
     );
 
     const filterValue = value.toLowerCase();
     return filteredAvailableMedicines.filter(
-      medicine => medicine.BrandName.toLowerCase().indexOf(filterValue) === 0
+      (medicine) => medicine.BrandName.toLowerCase().indexOf(filterValue) === 0
     );
   }
 
@@ -133,7 +138,7 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
   }
 
   loadAvailableMedicines() {
-    this.medicineService.getAvailableMedicines().subscribe(rspns => {
+    this.medicineService.getAvailableMedicines().subscribe((rspns) => {
       this.availableMedicines = rspns.data;
       this.subscribeToSearchValueChange();
     });
@@ -146,11 +151,11 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
 
     this.isLoading = true;
     this.storeService.addMedicines(this.medicinesToAdd).subscribe(
-      rspns => {
+      (rspns) => {
         this.isLoading = false;
         this.router.navigate(["home"]);
       },
-      error => {
+      (error) => {
         this.isLoading = false;
       }
     );
@@ -158,7 +163,7 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
 
   remove(medicine: Medicine) {
     const medIndex = this.medicinesToAdd.findIndex(
-      x => x.MedicineId === medicine.MedicineId
+      (x) => x.MedicineId === medicine.MedicineId
     );
     this.medicinesToAdd.splice(medIndex, 1);
     this.dataSource = new MatTableDataSource(this.medicinesToAdd);
