@@ -107,7 +107,8 @@ export class MedicinesAddComponent implements OnInit, AfterViewInit {
           Margin: 0,
           Qty: 0,
         },
-        sHealthCenter: this.authService.isHealthCentre,
+        isCreating: true,
+        isHealthCenter: this.authService.isHealthCentre,
       },
     });
 

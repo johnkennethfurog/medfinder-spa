@@ -17,7 +17,7 @@ export class MedicineEntryComponent implements OnInit {
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<MedicineEntryComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { med: Medicine; isHealthCenter: boolean }
+    public data: { med: Medicine; isHealthCenter: boolean; isCreating: boolean }
   ) {
     this.medicine = data.med;
     this.isHealthCenter = data.isHealthCenter;
@@ -25,7 +25,7 @@ export class MedicineEntryComponent implements OnInit {
   }
 
   initializeForm() {
-    const isFree = this.medicine.Srp === 0;
+    const isFree = this.data.isCreating ? false : this.medicine.Srp === 0;
 
     this.medForm = this.fb.group({
       Srp: this.fb.control(
